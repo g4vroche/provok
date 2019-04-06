@@ -1,7 +1,7 @@
 {
-  "name": "driven",
-  "version": "1.0.0",
-  "description": "",
+  "name": "provok",
+  "version": "0.0.1",
+  "description": "An event driven guideline",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest tests/"
   },
-  "author": "",
+  "author": "Hugues Charleux",
   "license": "ISC",
   "devDependencies": {
     "jest": "^24.5.0"
