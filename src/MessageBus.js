@@ -4,9 +4,7 @@ class MessageBus {
     this._subscribers = {
       plain: {},
       regexp: {},
-      wildcard: {
-        '*': [],
-      },
+      wildcard: { '*': [] },
     }
   }
 
@@ -24,7 +22,7 @@ class MessageBus {
   }
 
   /**
-   * @param {String] actionType
+   * @param {String} actionType
    * @return {Array}
    */
   _getRegExpSubscribers(actionType) {
