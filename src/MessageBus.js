@@ -51,11 +51,33 @@ class MessageBus {
     return Object.assign({}, context, { bus: this })
   }
 
+
+  /**
+   * @param {Object|String} Whole action object or action type as string
+   * @param {Object} [payload]
+   * @param {Object} [meta]
+   * @return {Object} Action
+   */
+  _parsePublishedAction(type, payload, meta) {
+    switch(typeof type) {
+      case 'string':
+        return { type, payload, meta }
+
+      case 'object':
+        return type
+
+      default:
+        throw 'First argument should be whole action as an object or action type as a string';
+    }
+  }
+
   /**
    * @param {Object} action FSA
    * @return {MessageBus}
    */
-  publish(action) {
+  publish(type, payload, meta) {
+    const action = this._parsePublishedAction(type, payload, meta)
+
     const subscribers = [].concat(
       this._getSubscribers('wildcard', '*'),
       this._getSubscribers('plain', action.type),
