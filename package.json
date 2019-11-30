@@ -7,11 +7,36 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "jest tests/"
+    "test": "jest tests/",
+    "example:import": "ts-node examples/data-import/main.ts"
   },
   "author": "Hugues Charleux",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^24.5.0"
+    "@types/jest": "^24.0.23",
+    "eslint": "^5.16.0",
+    "jest": "^24.5.0",
+    "prettier": "^1.17.0",
+    "prettier-eslint": "^8.8.2",
+    "ts-jest": "^24.2.0",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "uuid": "^3.3.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "tests",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
   }
 }
