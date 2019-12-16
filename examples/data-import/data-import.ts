@@ -1,57 +1,31 @@
-import {
-  MessageBus,
-  MessageBusHook
-} from "../../src/interface/messagebus.interface";
-import { Subscriber } from "../../src/interface/subscription.interface";
+import { MessageBus } from "../../src/interface/messagebus.interface";
 import { LocalBus } from "../../src/bus/local-bus";
 
+import { hooks } from "./logger";
 import { DataImportActions } from "./data-import.actions";
-import { DataFetcher } from "./data-fetcher";
-import { DataParser } from "./data-parser";
-import { DataSaver } from "./data-saver";
+import { DataFetcher } from "./subscribers/data-fetcher.subscriber";
+import { DataParser } from "./subscribers/data-parser.subscriber.";
+import { DataSaver } from "./subscribers/data-saver.subscriber.";
+import { CleanImpport } from "./subscribers/clean-import.subscriber";
 
 export class DataImport {
-  private readonly url: string;
   private readonly bus: MessageBus;
-  private readonly done: Subscriber = {
-    react: (_action, context) =>
-      context.bus.publish(DataImportActions.IMPORT_COMPLETED)
-  };
 
-  constructor(url: string) {
-    this.url = url;
-    this.bus = this.initBus();
-    this.register();
-  }
+  constructor() {
+    this.bus = new LocalBus(DataImportActions, hooks);
 
-  initBus() {
-    const hooks = {
-      [MessageBusHook.SUBSCRIBE]: [
-        data =>
-          console.log(`${new Date().toISOString()} - SUB/: ${data.pattern}`)
-      ],
-      [MessageBusHook.PUBLISH]: [
-        data => console.log(`${new Date().toISOString()} - PUB/: ${data.type}`)
-      ]
-    };
-
-    return new LocalBus(DataImportActions, hooks);
-  }
-
-  register() {
     this.bus
       .subscribe(DataImportActions.IMPORT_TRIGGERED, new DataFetcher())
       .subscribe(DataImportActions.DATA_RECEIVED, new DataParser())
+      .subscribe(DataImportActions.DATA_FETCH_FAILED, new CleanImpport())
       .subscribe(DataImportActions.DATA_PARSED, new DataSaver())
-      .subscribe(DataImportActions.DATA_SAVED, this.done);
+      .subscribe(DataImportActions.DATA_SAVED, new CleanImpport());
   }
 
-  run() {
-    const action = {
+  run(url: string) {
+    this.bus.publish({
       type: DataImportActions.IMPORT_TRIGGERED,
-      payload: { url: this.url },
-    };
-
-    this.bus.publish(action);
+      payload: { url }
+    });
   }
 }

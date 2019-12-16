@@ -1,6 +1,6 @@
-import { DataImport } from './data-import';
+import { DataImport } from "./data-import";
 
+const myImport = new DataImport();
 
-const myImport = new DataImport('https://somewhere.com/feed.json');
+myImport.run("https://somewhere.com/feed.json");
 
-myImport.run();

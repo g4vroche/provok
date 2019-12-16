@@ -9,7 +9,7 @@ export interface ActionMeta {
 }
 
 export interface Action {
-  type: string;
+  type: ActionType;
   payload?: ActionPayload,
   meta?: ActionMeta
 }

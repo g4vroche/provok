@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "test": "jest tests/",
     "example:import": "ts-node examples/data-import/main.ts"
   },
