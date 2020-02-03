@@ -10,7 +10,7 @@ describe("LocalBus", () => {
   let bus;
 
   beforeEach(() => {
-    bus = new LocalBus();
+    bus = new LocalBus([]);
     jest.resetAllMocks();
   });
 
